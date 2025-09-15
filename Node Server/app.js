@@ -6,11 +6,16 @@
 // }
 // http.createServer(requestListener);
 
+
+// start listening the request from the client
+// server.listen(3000);
+
+// ------------------------- alternative way -------------------------------
+// create server
 // const server =  http.createServer((req,res) => {
 //     console.log(req)
 // });
 
-// server.listen(3000);
 // const PORT = 3000;
 // server.listen(PORT, () => {
 //     console.log(`Server running on address http://localhost:${PORT}`);
