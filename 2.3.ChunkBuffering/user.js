@@ -1,8 +1,8 @@
-const http = require("http");
-const fs = require('fs');
+const http = require("http")
+const fs = require("fs");
 
 const server = http.createServer((req, res) => {
-    console.log(req.url, req.method, req.headers);
+    console.log(req.url, req.method);
 
     if(req.url === "/"){
         res.setHeader('Content-Type', 'text/html');
@@ -26,7 +26,19 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
 
-    else if(req.url.toLowerCase() === "/submit-userDetails" && req.method == "POST"){
+    else if(req.url.toLowerCase() === "/submit-userdetails" && req.method == "POST"){
+        const body = []; // empty array for collecting chunk
+        req.on('data', (chunk) => { // req.on lets you listen for request stream events(data,end,error)
+            console.log(chunk);
+            body.push(chunk); // pushing chunks of data to the empty array to get the combined output
+        });
+
+        // done receiving data
+        req.on("end", () => { // end event tells you no more chunks are coming
+            const parsedBody = Buffer.concat(body).toString();
+            console.log(parsedBody);
+        })
+
         fs.writeFileSync('user.txt', 'Saroj Gumanju');
         res.statusCode = 302; // 302 status code means redirection  
         res.setHeader('Location', '/');
@@ -34,22 +46,22 @@ const server = http.createServer((req, res) => {
 
     }
  
-    // else if(req.url.toLowerCase() === "/products"){
-    //     res.setHeader('Content-Type', 'text/html');
-    //     res.write('<html>');
-    //     res.write('<head><title>Saroj Node Practice</title></head>');
-    //     res.write('<body><h1>This is product page.</h1></body>')
-    //     res.write('</html>');
-    //     return res.end();
-    // }
-    // else{
-    //     res.setHeader('Content-Type', 'text/html');
-    //     res.write('<html>');
-    //     res.write('<head><title>Saroj Node Practice</title></head>');
-    //     res.write('<body><h1>404 error page not found.</h1></body>')
-    //     res.write('</html>');
-    //     res.end();
-    // }
+    else if(req.url.toLowerCase() === "/products"){
+        res.setHeader('Content-Type', 'text/html');
+        res.write('<html>');
+        res.write('<head><title>Saroj Node Practice</title></head>');
+        res.write('<body><h1>This is product page.</h1></body>')
+        res.write('</html>');
+        return res.end();
+    }
+    else{
+        res.setHeader('Content-Type', 'text/html');
+        res.write('<html>');
+        res.write('<head><title>Saroj Node Practice</title></head>');
+        res.write('<body><h1>404 error page not found.</h1></body>')
+        res.write('</html>');
+        res.end();
+    }
 });
 
 const   PORT = 3001;
