@@ -12,6 +12,7 @@ const sumRequestHandler = (req,res) => {
         const fullBody = Buffer.concat(body).toString();
         // console.log(fullBody);
         const params = new URLSearchParams(fullBody);
+        // console.log(params);
         const bodyObject = {};
         for( const [key, value] of params.entries()){
             bodyObject[key] = value;
