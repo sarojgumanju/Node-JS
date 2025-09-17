@@ -1,14 +1,17 @@
 
 const sumRequestHandler = (req,res) => {
-    console.log(req.url, req.method);
+    console.log("1. In request handler.", req.url, req.method);
     const body = [];
+    let result;
     req.on('data', (chunk) => {
         // console.log(chunk);
         body.push(chunk);
+        console.log("2. Chunk came.")
         console.log(body);
     });
 
     req.on('end', ()=>{
+        console.log("3. End event came.")
         const fullBody = Buffer.concat(body).toString();
         // console.log(fullBody);
         const params = new URLSearchParams(fullBody);
@@ -18,9 +21,11 @@ const sumRequestHandler = (req,res) => {
             bodyObject[key] = value;
         }
         console.log(bodyObject);
-        const result = Number(bodyObject.first) + Number(bodyObject.second);
+        result = Number(bodyObject.first) + Number(bodyObject.second);
         console.log(result);
+    });
 
+    console.log("4. sending the response.")
     res.setHeader("Content-Type", "text/html");
     res.write(`
         <html>
@@ -32,7 +37,6 @@ const sumRequestHandler = (req,res) => {
     `);
 
     return res.end();
-    });
 }
 
 module.exports = sumRequestHandler;

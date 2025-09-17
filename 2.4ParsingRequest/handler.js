@@ -52,14 +52,19 @@ const userRequestHandler = (req,res) => {
             // writin in user.txt file in JSON format
             const jsonString = JSON.stringify(bodyObject);
             console.log(jsonString);
-            fs.writeFileSync('user.txt', jsonString);
+
+            // blocks the main thread
+            // fs.writeFileSync('user.txt', jsonString);
             // Or fs.writeFileSync('user.txt', JSON.stringify(bodyObject));
-        })
 
-        res.statusCode = 302; // 302 status code means redirection  
-        res.setHeader('Location', '/');
-        res.end();
-
+            fs.writeFile('user.txt', jsonString, error => {
+                console.log("Data written successfully.");
+                res.statusCode = 302; // 302 status code means redirection  
+                res.setHeader('Location', '/');
+                res.end();
+                
+            });
+        });
     }
  
     else if(req.url.toLowerCase() === "/products"){
