@@ -35,7 +35,7 @@ app.post("/contact-us", (req, res, next) => {
         <h1>Thanks for your details.</h1>
         <h1>We will contact you soon.</h1>
     `);
-})
+});
 
 // app.use("/", (req, res, next) => {
 //     console.log("Third midleware", req.url, req.method);
