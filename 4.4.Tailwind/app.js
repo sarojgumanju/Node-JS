@@ -21,12 +21,13 @@ app.use(express.urlencoded()); // parsing body
 
 
 // Serve static files from "views"
+app.use(express.static(path.join(rootDir, "public")));
 app.use(express.static(path.join(rootDir, "views")));
 
 app.use(userRouter);
 app.use("/host", hostRouter);
 app.use((req, res, next) => {
-    res.status(404).render(('404', {pageTitle: 'Page not found'}));
+    res.status(404).render('404', {pageTitle: 'Page not found'});
 })
 
 
