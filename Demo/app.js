@@ -17,8 +17,12 @@ const app = express();
 app.use(express.urlencoded()); // parsing body
 app.use(userRouter);
 app.use("/host", hostRouter);
+
+// Granting access to public folder
+app.use(express.static(path.join(rootDir, 'src')));
+
 app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(rootDir, 'views/404.html'));
+    res.status(404).sendFile(path.join(rootDir, 'views', '404.html'));
 })
 
 
