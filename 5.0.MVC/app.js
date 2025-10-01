@@ -6,7 +6,8 @@ const express = require("express");
 
 // local module
 const userRouter = require("./routes/userRouter");
-const { hostRouter } = require("./routes/hostRouter");
+const hostRouter  = require("./routes/hostRouter");
+const errorRouter = require("./routes/errorRouter")
 const rootDir = require("./utils/pathUtil")
 
 // app for express
@@ -17,18 +18,16 @@ app.set('view engine', 'ejs');
 app.set('views', 'views')
 
 
-// middleware
-app.use(express.urlencoded()); // parsing body
-app.use(userRouter);
-app.use("/host", hostRouter);
-
 // Granting access to public folder
 app.use(express.static(path.join(rootDir, 'src')));
 
-app.use((req, res, next) => {
-    res.status(404).render('404', {pageTitle: 'Page Not Found', currentPage: '404'});
-})
+app.use(express.urlencoded()); // parsing body
 
+
+// routers
+app.use(userRouter);
+app.use("/host", hostRouter);
+app.use(errorRouter); // 404 handler (must be last)
 
 
 const PORT = 3000;
