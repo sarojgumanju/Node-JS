@@ -5,7 +5,7 @@ const path = require('path');
 const express = require("express");
 
 // local module
-const userRouter = require("./routes/userRouter");
+const storeRouter = require("./routes/storeRouter");
 const hostRouter  = require("./routes/hostRouter");
 const errorRouter = require("./routes/errorRouter")
 const rootDir = require("./utils/pathUtil")
@@ -25,7 +25,7 @@ app.use(express.urlencoded()); // parsing body
 
 
 // routers
-app.use(userRouter);
+app.use(storeRouter);
 app.use("/host", hostRouter);
 app.use(errorRouter); // 404 handler (must be last)
 
