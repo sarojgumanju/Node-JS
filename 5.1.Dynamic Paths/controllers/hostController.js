@@ -14,7 +14,7 @@ const getHostHomes = (req, res, next) => {
       pageTitle: "Host Homes List",
       currentPage: "host-homes",
     })
-  );
+  ); 
 };
 
 const postAddHome = (req, res, next) => {
@@ -22,7 +22,7 @@ const postAddHome = (req, res, next) => {
   const home = new Home(houseName, price, location, rating, photoUrl);
   home.save();
 
-  res.render("host/home-added", {
+  res.render("host/homeAdded", {
     pageTitle: "Home Added Successfully",
     currentPage: "homeAdded",
   });

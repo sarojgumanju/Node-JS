@@ -1,1 +1,1 @@
-[{"houseName":"saroj residence","price":"20000","location":"Bhaktapur","rating":"5","photoUrl":"QFGHI"},{"houseName":"Ujjwal residence","price":"3456","location":"katunje","rating":"3","photoUrl":"WG"}]
+[{"houseName":"Ujjwal residence","description": "This is a very good place.", "price":"30000","location":"Kathmandu","rating":"5","photoUrl":"/images/house1.png","id":"0.4089294522309106"},{"houseName":"Saroj Residence", "description": "This is a very good place.", "price":"40000","location":"Singapore","rating":"5","photoUrl":"/images/house2.png","id":"0.7563354031472385"}]
