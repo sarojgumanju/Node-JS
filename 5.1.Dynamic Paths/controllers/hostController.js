@@ -4,6 +4,29 @@ const getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to airbnb",
     currentPage: "addHome",
+    editing: false,
+  });
+};
+
+
+const getHostHomes = (req, res, next) => {
+  Home.fetchAll((registeredHomes) =>
+    res.render("host/host-home-list", {
+      registeredHomes: registeredHomes,
+      pageTitle: "Host Homes List",
+      currentPage: "host-homes",
+    })
+  );
+};
+
+const postAddHome = (req, res, next) => {
+  const { houseName, description, price, location, rating, photoUrl } = req.body;
+  const home = new Home(houseName, description, price, location, rating, photoUrl);
+  home.save();
+
+  res.render("host/homeAdded", {
+    pageTitle: "Home Added Successfully",
+    currentPage: "homeAdded",
   });
 };
 
@@ -26,25 +49,13 @@ const getEditHome = (req, res, next) => {
   });
 };
 
-const getHostHomes = (req, res, next) => {
-  Home.fetchAll((registeredHomes) =>
-    res.render("host/host-home-list", {
-      registeredHomes: registeredHomes,
-      pageTitle: "Host Homes List",
-      currentPage: "host-homes",
-    })
-  );
-};
-
-const postAddHome = (req, res, next) => {
-  const { houseName, price, location, rating, photoUrl } = req.body;
-  const home = new Home(houseName, price, location, rating, photoUrl);
+const postEditHome = (req, res, next) => {
+  const { id, houseName, description,  price, location, rating, photoUrl } = req.body;
+  const home = new Home(houseName, description, price, location, rating, photoUrl);
+  home.id = id;
   home.save();
 
-  res.render("host/homeAdded", {
-    pageTitle: "Home Added Successfully",
-    currentPage: "homeAdded",
-  });
+  res.redirect("/host/host-home-list");
 };
 
-module.exports = { getAddHome, getHostHomes, postAddHome, getEditHome };
+module.exports = { getAddHome, getHostHomes, postAddHome, getEditHome, postEditHome };

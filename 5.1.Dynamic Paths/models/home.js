@@ -8,8 +8,9 @@ let registeredHomes = [];
 const filePath = path.join(rootDir, "data", "homes.json");
 
 module.exports = class Home {
-  constructor(houseName, price, location, rating, photoUrl) {
+  constructor(houseName, description, price, location, rating, photoUrl) {
     this.houseName = houseName;
+    this.description = description;
     this.price = price;
     this.location = location;
     this.rating = rating;
@@ -17,12 +18,24 @@ module.exports = class Home {
   }
 
   save() {
-    this.id = Math.random().toString();
+    
     Home.fetchAll((registeredHomes) => {
-      registeredHomes.push(this);
-      console.log("this is file path" + filePath);
+      if (this.id) { // edit home case
+        registeredHomes = registeredHomes.map(home => {
+          // if(home.id === this.id){
+          //   return this;
+          // }
+          // return home;
+          return home.id === this.id ? this : home;
+        })
+      } else { // add home case
+        this.id = Math.random().toString();
+        registeredHomes.push(this);
+      }
+      
+      // console.log("this is file path" + filePath);
       fs.writeFile(filePath, JSON.stringify(registeredHomes), (err) => {
-        console.log("Error check: ");
+        console.log("Error check: ", err);
       });
     });
   }
@@ -34,12 +47,10 @@ module.exports = class Home {
     });
   }
 
-  static findById(homeId, callback){
-    this.fetchAll(homes => {
-      const homeFound = homes.find(home => home.id === homeId);
+  static findById(homeId, callback) {
+    this.fetchAll((homes) => {
+      const homeFound = homes.find((home) => home.id === homeId);
       callback(homeFound);
-    })
+    });
   }
-
-
 };
