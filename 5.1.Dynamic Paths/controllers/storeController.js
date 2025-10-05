@@ -68,11 +68,23 @@ const postAddToFavourites =(req, res, next) => {
   })
 }
 
+const postRemoveFromFavourites = (req, res, next) => {
+  const homeId = req.params.homeId;
+  console.log("this is favourite home remove id: ", homeId);
+  Favourite.deleteById(homeId, error => {
+    if(error){
+      console.log('Error while deleting: ', error);
+    }
+    res.redirect("/favourites");
+  })
+}
+
 module.exports = {
   getHomes,
   getBookings,
   getIndex,
   getFavouriteList,
   getHomeDetails,
-  postAddToFavourites
+  postAddToFavourites,
+  postRemoveFromFavourites
 };
