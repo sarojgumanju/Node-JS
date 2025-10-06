@@ -7,8 +7,20 @@ const express = require("express");
 // local module
 const storeRouter = require("./routes/storeRouter");
 const hostRouter  = require("./routes/hostRouter");
-const errorRouter = require("./routes/errorRouter")
-const rootDir = require("./utils/pathUtil")
+const errorRouter = require("./routes/errorRouter");
+const rootDir = require("./utils/pathUtil");
+
+
+// ------------------------- testing database ---------------------
+// const db = require("./utils/dataBase");
+// db.execute('SELECT * FROM homes')
+// .then(([rows, fields]) => {
+//     console.log('Getting from database', rows)
+// })
+// .catch(error => {
+//     console.log('Error while readig home from database', error)
+// })
+
 
 // app for express
 const app = express();
