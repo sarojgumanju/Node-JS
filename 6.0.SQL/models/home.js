@@ -12,7 +12,7 @@ module.exports = class Home {
   }
 
   save() {
-    console.log("Saving home:", this);
+    // console.log("Saving home:", this);
     if(this.id){ // update
       return db.execute('UPDATE homes SET houseName=?, description=?, price=?, location=?, rating=?, photoUrl=? WHERE id=?',
       [this.houseName, this.description, this.price, this.location, this.rating, this.photoUrl, this.id]  

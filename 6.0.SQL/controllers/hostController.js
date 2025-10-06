@@ -55,7 +55,7 @@ const getEditHome = (req, res, next) => {
 const postEditHome = (req, res, next) => {
   const { id, houseName, description,  price, location, rating, photoUrl } = req.body;
   const home = new Home(id, houseName, description, price, location, rating, photoUrl);
-  console.log("Request body:", req.body);
+  // console.log("Request body:", req.body);
   home.save();
   res.redirect("/host/host-home-list");
 };
