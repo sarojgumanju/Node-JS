@@ -2,9 +2,9 @@ const { ObjectId } = require("mongodb");
 const { getDB } = require("../utils/dataBase");
 
 module.exports = class Home {
-  constructor( _id, houseName, description, price, location, rating, photoUrl) {
-    if(_id){
-      this._id = _id;
+  constructor( id, houseName, description, price, location, rating, photoUrl) {
+    if(id){
+      this.id = id;
     }
     this.houseName = houseName;
     this.description = description;
@@ -16,7 +16,7 @@ module.exports = class Home {
 
   save() {
     const db = getDB();
-    if(this._id){ // update
+    if(this.id){ // update
       const updateFields = {
         houseName: this.houseName,
         description: this.description,
@@ -27,7 +27,7 @@ module.exports = class Home {
       }
       return db.collection('homes')
       .updateOne(
-        {_id: new ObjectId(String(this._id))},
+        {_id: new ObjectId(String(this.id))},
         {$set: updateFields}
       )
     }else{ // insert
@@ -36,7 +36,7 @@ module.exports = class Home {
     }
   }
 
-  
+
   static fetchAll() {
     const db = getDB(); // Get database connection
     return db.collection('homes') // Accesses and return the collection named 'homes' in your database.
@@ -61,7 +61,7 @@ module.exports = class Home {
   static deleteById(id){
     const db = getDB();
     return db.collection('homes')
-    .deleteOne({_id: new ObjectId(String(id))})
+    .deleteOne({_id: new ObjectId(String(id))});
   }
 
 };

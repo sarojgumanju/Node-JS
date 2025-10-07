@@ -1,19 +1,29 @@
+const { getDB } = require("../utils/dataBase");
 
 module.exports = class Favourite {
-  constructor( ) {
-    if(_id){
-      this._id = _id;
-    }
+  constructor(houseId) {
+    this.houseId = houseId;
+  }
+
+  save() {
+    const db = getDB();
+    return db.collection("favourites").findOne({houseId: this.houseId})
+    .then(existingFav => {
+      if(!existingFav){
+        return db.collection("favourites").insertOne(this);
+      }
+      return Promise.resolve();
+    })
     
   }
 
-  static addToFavourties(){
+  static getFavourites() {
+    const db = getDB();
+    return db.collection("favourites").find().toArray();
   }
 
-  static getFavourites(){
+  static deleteById(delHomeId) {
+    const db = getDB();
+    return db.collection("favourites").deleteOne({ houseId: delHomeId });
   }
-
-  static deleteById(){
-  }
-
 };
