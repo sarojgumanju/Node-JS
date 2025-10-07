@@ -10,7 +10,7 @@ const getAddHome = (req, res, next) => {
 
 
 const getHostHomes = (req, res, next) => {
-  Home.fetchAll().then(([registeredHomes]) => {
+  Home.fetchAll().then((registeredHomes) => {
     res.render("host/host-home-list", {
       registeredHomes: registeredHomes,
       pageTitle: "Host Homes List",
@@ -37,8 +37,7 @@ const postAddHome = (req, res, next) => {
 const getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
-  Home.findById(homeId).then(([homes]) => {
-    const home = homes[0];
+  Home.findById(homeId).then(home => {
     if (!home) {
       console.log("Home not found for editing.");
       return res.redirect("/host/host-home-list");
@@ -58,7 +57,7 @@ const postEditHome = (req, res, next) => {
   const { id, houseName, description,  price, location, rating, photoUrl } = req.body;
   const home = new Home(id, houseName, description, price, location, rating, photoUrl);
   // console.log("Request body:", req.body);
-  home.save();
+  home.save().then(result => console.log("Home updated: ", result));
   res.redirect("/host/host-home-list");
 };
 
