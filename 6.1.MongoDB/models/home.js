@@ -34,9 +34,9 @@ module.exports = class Home {
       // insert Many takes an array of an objects
       return db.collection("homes").insertOne(this);
     }
-    
   }
 
+  
   static fetchAll() {
     const db = getDB(); // Get database connection
     return db.collection('homes') // Accesses and return the collection named 'homes' in your database.
