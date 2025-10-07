@@ -9,7 +9,7 @@ const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const errorRouter = require("./routes/errorRouter");
 const rootDir = require("./utils/pathUtil");
-const mongoConnect = require("./utils/dataBase");
+const {mongoConnect} = require("./utils/dataBase");
 
 // ------------------------- testing database ---------------------
 // const db = require("./utils/dataBase");

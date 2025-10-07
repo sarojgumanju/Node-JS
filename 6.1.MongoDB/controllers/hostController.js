@@ -24,7 +24,9 @@ const postAddHome = (req, res, next) => {
   const home = new Home(id, houseName, description, price, location, rating, photoUrl);
   console.log("Request body:", req.body);
   
-  home.save();
+  home.save().then(() => {
+    console.log("Home added successfully.");
+  });
 
   res.render("host/homeAdded", {
     pageTitle: "Home Added Successfully",

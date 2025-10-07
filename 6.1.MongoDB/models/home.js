@@ -1,4 +1,4 @@
-const db = require("../utils/dataBase");
+const { getDB } = require("../utils/dataBase");
 
 module.exports = class Home {
   constructor( id, houseName, description, price, location, rating, photoUrl) {
@@ -12,28 +12,30 @@ module.exports = class Home {
   }
 
   save() {
-    // console.log("Saving home:", this);
-    if(this.id){ // update
-      return db.execute('UPDATE homes SET houseName=?, description=?, price=?, location=?, rating=?, photoUrl=? WHERE id=?',
-      [this.houseName, this.description, this.price, this.location, this.rating, this.photoUrl, this.id]  
-    )
-    } else{ // insert
-      return db.execute('INSERT INTO homes (houseName, description, price, location, rating, photoUrl) VALUES (?, ?, ?, ?, ?, ?)', 
-      [this.houseName, this.description, this.price, this.location, this.rating, this.photoUrl]  
-      );
-    }
+    const db = getDB();
+    // insert Many takes an array of an objects
+    return db.collection("homes").insertOne(this).then((result) => {
+      console.log(result);
+    })
   }
 
-  static fetchAll(callback) {
-     return db.execute('SELECT * FROM homes');
+  static fetchAll() {
+    const db = getDB(); // Get database connection
+    return db.collection('homes') // Accesses and return the collection named 'homes' in your database.
+    .find() // The .find() method is used to query all documents in the 'homes' collection.
+    .toArray() // Converts the cursor (stream of data) returned by .find() into a JavaScript array.
+    .then((homes) => { // .then() runs after the database query successfully finishes.
+      console.log(homes);
+      return homes;
+    }).catch((error) => {
+      console.log("Error while fetching homes: ", error);
+    });
   }
 
   static findById(homeId) {
-     return db.execute('SELECT * FROM homes WHERE id=?', [homeId]);
   }
 
   static deleteById(id){
-    return db.execute('DELETE FROM homes WHERE id=?', [id]);
   }
 
 };
