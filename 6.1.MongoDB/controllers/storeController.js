@@ -46,6 +46,7 @@ const getFavouriteList = (req, res, next) => {
 
 const getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
+  // console.log(homeId);
   Home.findById(homeId).then((home) => {
     if (!home) {
       console.log("Home not found.");
@@ -70,6 +71,7 @@ const postAddToFavourites =(req, res, next) => {
   .finally(() => res.redirect("/favourites"));
 }
 
+ 
 const postRemoveFromFavourites = (req, res, next) => {
   const homeId = req.params.homeId;
   console.log("this is favourite home remove id: ", homeId);

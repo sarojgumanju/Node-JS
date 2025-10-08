@@ -7,7 +7,7 @@ const getAddHome = (req, res, next) => {
     editing: false,
   });
 };
-
+ 
 
 const getHostHomes = (req, res, next) => {
   Home.fetchAll().then((registeredHomes) => {

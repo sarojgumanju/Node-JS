@@ -12,9 +12,9 @@ module.exports = class Favourite {
       if(!existingFav){
         return db.collection("favourites").insertOne(this);
       }
-      return Promise.resolve();
+      return Promise.resolve(); // If the favourite already exists, the code doesn’t insert it again (avoiding duplicates).
     })
-    
+     
   }
 
   static getFavourites() {
