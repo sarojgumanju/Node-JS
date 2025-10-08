@@ -58,7 +58,7 @@ const getHomeDetails = (req, res, next) => {
 // -------------------------------- get Favourite List --------------------------
 const getFavouriteList = (req, res, next) => {
   Favourite.find()
-  .populate('houseId')
+  .populate("houseId")
   .then((favourites) => {
     const favouriteHomes = favourites.map((fav) => fav.houseId);
     res.render("store/favourite-list", {
