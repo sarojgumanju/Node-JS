@@ -18,6 +18,7 @@ const getHomes = (req, res, next) => {
 // ------------------------------ get Index -------------------------------
 const getIndex = (req, res, next) => {
   Home.find().then((registeredHomes) => {
+    //  console.log("Session value: ", req.session)
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "Home list",

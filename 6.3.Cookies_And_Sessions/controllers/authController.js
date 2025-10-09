@@ -10,18 +10,27 @@ const getLogin = (req, res, next) => {
 
 // -------------------------------- post login ------------------------------
 const postLogin = (req, res, next) => {
-    // console.log(req.body);
-    res.cookie("isLoggedIn", true);
-    // req.isLoggedIn = true;
+    console.log(req.body);
+    // res.cookie("isLoggedIn", true); // using cookie
+    
+    req.session.isLoggedIn = true; // using session
     res.redirect("/");
 }
 
 
 // -------------------------------- post logout -------------------------------
-const postLogout = (req, res, next) => {
-    res.cookie("isLoggedIn", false);
+// using cookies
+// const postLogout = (req, res, next) => {
+    // res.cookie("isLoggedIn", false);
     // 'OR' res.clearCookie('isLoggedIn');
-    res.redirect("/login");
-}
+
+//     res.redirect("/login");
+// }
+
+const postLogout = (req, res, next) => {
+    req.session.destroy(() => {
+        res.redirect('/login');
+    });
+};
 
 module.exports = {getLogin, postLogin, postLogout};
