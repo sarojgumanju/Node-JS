@@ -25,9 +25,40 @@ app.use(express.static(path.join(rootDir, "src")));
 
 app.use(express.urlencoded()); // parsing body
 
+
+// middleware that checks whether a cookie indicates the user is logged in or not
+app.use((req, res, next) => {
+  console.log('Cookie check middleware', req.get('Cookie'));
+  req.isLoggedIn = req.get('Cookie') ? req.get('Cookie').split('=')[1] === 'true' : false;
+  next();
+});
+
 // routers
+// ---------------------------------- for store -------------------------------------
+app.use(["/homes", "/bookings", "/favourites"], (req, res, next) => {
+  if(req.isLoggedIn){
+    next();
+  }
+  else{
+    res.redirect("/login");
+  }
+});
 app.use(storeRouter);
+
+
+// ----------------------------------- for host -----------------------------------------
+app.use("/host", (req, res, next) => {
+  if(req.isLoggedIn){
+    next();
+  }
+  else{
+    res.redirect("/login");
+  }
+});
 app.use("/host", hostRouter);
+
+
+// ---------------------------------- for authentication and error ------------------------
 app.use(authRouter);
 app.use(errorRouter); // 404 handler (must be last)
 

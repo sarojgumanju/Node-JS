@@ -9,6 +9,7 @@ const getHomes = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "airbnb Home",
       currentPage: "Home",
+      isLoggedIn: req.isLoggedIn,
     })
   }) 
 };
@@ -21,6 +22,7 @@ const getIndex = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "Home list",
       currentPage: "index",
+      isLoggedIn: req.isLoggedIn,
     })
   })
 };
@@ -31,6 +33,7 @@ const getBookings = (req, res, next) => {
   res.render("store/booking", {
     pageTitle: " My Bookings",
     currentPage: "bookings",
+    isLoggedIn: req.isLoggedIn,
   });
 };
 
@@ -49,6 +52,7 @@ const getHomeDetails = (req, res, next) => {
         home: home,
         pageTitle: "Home Detail",
         currentPage: "Home",
+        isLoggedIn: req.isLoggedIn,
       });
     }
   });
@@ -65,6 +69,7 @@ const getFavouriteList = (req, res, next) => {
       favouriteHomes: favouriteHomes,
       pageTitle: "My Favourites",
       currentPage: "favourites",
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };

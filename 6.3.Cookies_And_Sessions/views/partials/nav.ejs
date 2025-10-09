@@ -8,7 +8,9 @@
           >airbnb</a
         >
       </li>
-      <li>
+
+      <% if(isLoggedIn){ %>
+        <li>
         <a
           href="/homes"
           class="<%= currentPage === 'Home' ? 'bg-red-400' : 'hover:bg-red-300/65' %> py-2 px-4 rounded transition duration-300"
@@ -43,11 +45,23 @@
           >Add Home</a
         >
       </li>
+      <% } %>
+      
       <li>
+        <% if(!isLoggedIn){ %>
         <a 
           href="/login"
-          class="bg-blue-300 hover:bg-blue-200 text-black font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
+          class="bg-black/75 hover:bg-black/60 text-white font-semibold py-2 px-4 rounded-md shadow-md"
           >Login</a>
+        <% } else { %>
+          <form action="/logout" method="POST">
+            <button
+            type="submit"
+            class="bg-black/75 hover:bg-black/60 text-white font-semibold py-2 px-4 rounded-md  shadow-md"
+            >Logout
+           </button>
+          </form>
+        <% } %>
       </li>
     </ul>
   </nav>
