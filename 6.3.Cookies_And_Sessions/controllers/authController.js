@@ -10,7 +10,7 @@ const getLogin = (req, res, next) => {
 
 // -------------------------------- post login ------------------------------
 const postLogin = (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     // res.cookie("isLoggedIn", true); // using cookie
     
     req.session.isLoggedIn = true; // using session
@@ -23,13 +23,12 @@ const postLogin = (req, res, next) => {
 // const postLogout = (req, res, next) => {
     // res.cookie("isLoggedIn", false);
     // 'OR' res.clearCookie('isLoggedIn');
-
 //     res.redirect("/login");
 // }
 
 const postLogout = (req, res, next) => {
     req.session.destroy(() => {
-        res.redirect('/login');
+        res.redirect('/');
     });
 };
 

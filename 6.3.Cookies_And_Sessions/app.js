@@ -69,7 +69,7 @@ app.use(storeRouter);
 app.use("/host", (req, res, next) => {
   if(req.isLoggedIn){
     next();
-  }
+  } 
   else{
     res.redirect("/login");
   }
