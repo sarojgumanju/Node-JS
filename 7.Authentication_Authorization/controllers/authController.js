@@ -43,9 +43,19 @@ const getSignup = (req, res, next) => {
 }
 
 
-const postSignup = (req, res, next) => {
+const postSignup = [
+    check("firstName")
+    .notEmpty()
+    .withMessage('First name is required')
+    .trim()
+    .isLength({ min: 2 })
+    .withMessage('First name must be at least 2 characters long')
+    .matches(/^[a-zA-Z\s]+$/)
+    .withMessage('First name can only contain letters'),
+    
+    (req, res, next) => {
     console.log(req.body);
     res.redirect('/login');
-}
+}]
 
 module.exports = {getLogin, postLogin, postLogout, getSignup, postSignup};
