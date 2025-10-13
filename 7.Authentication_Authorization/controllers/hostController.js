@@ -1,4 +1,5 @@
 const Home = require("../models/home");
+const user = require("../models/user");
 
 // ------------------------- get Add Home -----------------------------
 const getAddHome = (req, res, next) => {
@@ -7,6 +8,7 @@ const getAddHome = (req, res, next) => {
     currentPage: "addHome",
     editing: false,
     isLoggedIn: req.isLoggedIn,
+    user: req.session.user,
   });
 };
  
@@ -19,6 +21,7 @@ const getHostHomes = (req, res, next) => {
       pageTitle: "Host Homes List",
       currentPage: "host-homes",
       isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
     })
   })
 };
@@ -62,6 +65,7 @@ const getEditHome = (req, res, next) => {
       currentPage: "host-homes",
       editing: editing,
       isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
     });
   });
 };

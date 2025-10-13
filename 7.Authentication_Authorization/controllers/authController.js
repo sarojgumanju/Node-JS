@@ -28,7 +28,8 @@ const postLogin = async (req, res, next) => {
       currentPage: "login",
       isLoggedIn: false,
       errors: ['User does not exist.'],
-      oldInput: {email}
+      oldInput: {email},
+      user: {}
     });
   }
 
@@ -39,7 +40,8 @@ const postLogin = async (req, res, next) => {
       currentPage: "login", 
       isLoggedIn: false, 
       errors: ['Incorrect password!'], 
-      oldInput: {email}
+      oldInput: {email},
+      user: {}
     });
   }
 

@@ -10,6 +10,7 @@ const getHomes = (req, res, next) => {
       pageTitle: "airbnb Home",
       currentPage: "Home",
       isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
     })
   }) 
 };
@@ -24,6 +25,7 @@ const getIndex = (req, res, next) => {
       pageTitle: "Home list",
       currentPage: "index",
       isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
     })
   })
 };
@@ -35,6 +37,7 @@ const getBookings = (req, res, next) => {
     pageTitle: " My Bookings",
     currentPage: "bookings",
     isLoggedIn: req.isLoggedIn,
+    user: req.session.user,
   });
 };
 
@@ -54,6 +57,7 @@ const getHomeDetails = (req, res, next) => {
         pageTitle: "Home Detail",
         currentPage: "Home",
         isLoggedIn: req.isLoggedIn,
+        user: req.session.user,
       });
     }
   });
@@ -71,6 +75,7 @@ const getFavouriteList = (req, res, next) => {
       pageTitle: "My Favourites",
       currentPage: "favourites",
       isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
     });
   });
 };
