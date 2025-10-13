@@ -9,31 +9,54 @@ const getLogin = (req, res, next) => {
     pageTitle: "Login",
     currentPage: "login",
     isLoggedIn: false,
+    errors: [],
+    oldInput: {email: ""},
+    user: {},
   });
 };
 
-// -------------------------------- post login ------------------------------
-const postLogin = (req, res, next) => {
-  // console.log(req.body);
-  // res.cookie("isLoggedIn", true); // using cookie
 
-  req.session.isLoggedIn = true; // using session
+// -------------------------------- post login ------------------------------
+const postLogin = async (req, res, next) => {
+  // console.log(req.body);
+  const { email, password } = req.body;
+  // const user = User.findOne({email: email}); // “Find the user whose email equals the given email.”
+  const user = await User.findOne({email});
+  if(!user){
+    return res.status(400).render("auth/login", {
+      pageTitle: "Login", 
+      currentPage: "login",
+      isLoggedIn: false,
+      errors: ['User does not exist.'],
+      oldInput: {email}
+    });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if(!isMatch){
+    return res.status(422).render("auth/login", {
+      pageTitle: "Login", 
+      currentPage: "login", 
+      isLoggedIn: false, 
+      errors: ['Incorrect password!'], 
+      oldInput: {email}
+    });
+  }
+
+  req.session.isLoggedIn = true; 
+  req.session.user = user;
+  await req.session.save();
   res.redirect("/");
 };
 
-// -------------------------------- post logout -------------------------------
-// using cookies
-// const postLogout = (req, res, next) => {
-// res.cookie("isLoggedIn", false);
-// 'OR' res.clearCookie('isLoggedIn');
-//     res.redirect("/login");
-// }
 
+// -------------------------------- post logout ------------------------------
 const postLogout = (req, res, next) => {
   req.session.destroy(() => {
     res.redirect("/");
   });
 };
+
 
 // ----------------------------------- get signup -------------------------------------------
 const getSignup = (req, res, next) => {
@@ -43,8 +66,10 @@ const getSignup = (req, res, next) => {
     isLoggedIn: false,
     errors: [],
     oldInput: { firstName: "", lastName: "", email: "", userType: "" },
+    user: {}
   });
 };
+
 
 // -------------------------------------- post Signup ----------------------------------------
 const postSignup = [
@@ -123,6 +148,7 @@ const postSignup = [
           password,
           userType,
         },
+        user: {}
       });
     }
 
@@ -147,6 +173,7 @@ const postSignup = [
           isLoggedIn: false,
           errors: [err.msg],
           oldInput: { firstName, lastName, email, password, userType },
+          user: {},
         });
       });
       
