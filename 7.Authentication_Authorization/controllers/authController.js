@@ -1,4 +1,5 @@
 const { check, validationResult } = require("express-validator");
+const User = require("../models/user");
 
 // -------------------------------- get LogIn --------------------------------
 const getLogin = (req, res, next) => {
@@ -41,6 +42,8 @@ const getSignup = (req, res, next) => {
         pageTitle: 'SignUp',
         currentPage: 'signup',
         isLoggedIn: false,
+        errors: [],
+        oldInput: {firstName: "", lastName: "", email: "", userType: ""},
     })
 }
 
@@ -73,11 +76,11 @@ const postSignup = [
     // Password validation
     check('password')
     .isLength({ min: 5 })
-    .withMessage('Password must be at least 8 characters long.')
+    .withMessage('Password must be at least 5 characters long.')
     .matches(/[a-z]/)
-    .withMessage('Password must contain at leas one lower case.')
-    .matches(/[A-A]/)
-    .withMessage('Password must contain at leas one upper case.')
+    .withMessage('Password must contain at least one lower case.')
+    .matches(/[A-Z]/)
+    .withMessage('Password must contain at least one upper case.')
     .matches(/[!@#$^&*(),.?":{}|<>;]/)
     .withMessage('Password must contain at least one special character.')
     .trim(),
@@ -120,10 +123,10 @@ const postSignup = [
     const errors = validationResult(req);
 
     if(!errors.isEmpty()){
-      return res.status(422).render('auth/signup', {
+      return res.status(400).render('auth/signup', {
         pageTitle: 'Sign Up',
         isLoggedIn: false, 
-        errorMessage: errors.array().map(error => error.msg),
+        errors: errors.array().map(error => error.msg),
         oldInput: {
           firstName, 
           lastName,
@@ -134,7 +137,18 @@ const postSignup = [
       });
     }
 
-    res.redirect('/login');
+    const user = new User({firstName, lastName, email, password, userType});
+    user.save().then(() => {
+      res.redirect('/login');
+    }).catch(err => {
+      return res.status(400).render("auth/signup", {
+        pageTitle: "Sign Up",
+        isLoggedIn: false, 
+        errors: [err.msg],
+        oldInput: {firstName, lastName, email, password, userType}
+      });
+      
+    });
 }]
 
 module.exports = {getLogin, postLogin, postLogout, getSignup, postSignup};
