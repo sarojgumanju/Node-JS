@@ -1,3 +1,5 @@
+const { check, validationResult } = require("express-validator");
+
 // -------------------------------- get LogIn --------------------------------
 const getLogin = (req, res, next) => {
  res.render('auth/login', {
@@ -33,7 +35,7 @@ const postLogout = (req, res, next) => {
 };
 
 
-
+// ----------------------------------- get signup -------------------------------------------
 const getSignup = (req, res, next) => {
     res.render('auth/signup', {
         pageTitle: 'SignUp',
@@ -43,6 +45,7 @@ const getSignup = (req, res, next) => {
 }
 
 
+// -------------------------------------- post Signup ----------------------------------------
 const postSignup = [
     // First Name validation
     check("firstName")
@@ -110,8 +113,27 @@ const postSignup = [
         return true;
     }),
     
+
+    // Final handler middleware
     (req, res, next) => {
-    console.log(req.body);
+    const { firstName, lastName, email, password, userType }  = req.body;
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+      return res.status(422).render('auth/signup', {
+        pageTitle: 'Sign Up',
+        isLoggedIn: false, 
+        errorMessage: errors.array().map(error => error.msg),
+        oldInput: {
+          firstName, 
+          lastName,
+          email,
+          password, 
+          userType
+        }
+      });
+    }
+
     res.redirect('/login');
 }]
 

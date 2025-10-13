@@ -5,6 +5,7 @@ const authRouter = express.Router();
 // local module
 const {getLogin, postLogin, postLogout, getSignup, postSignup} = require('../controllers/authController');
 
+
 // routing
 authRouter.get('/login', getLogin);
 authRouter.post('/login', postLogin);
