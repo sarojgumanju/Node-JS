@@ -1,8 +1,8 @@
 <header class="bg-red-500 text-white p-4 shadow-md sticky top-0 z-10">
-  <nav class="container mx-auto">
+  <nav class="container mx-auto font-bold">
     <!-- Desktop Navigation -->
     <div class="hidden md:flex md:justify-between md:items-center">
-      <ul class="flex items-center flex-wrap gap-1">
+      <ul class="flex items-center flex-wrap gap-1 ">
         <li>
           <a
             href="/"
@@ -147,7 +147,7 @@
         <li>
           <a
             href="/signup"
-            class="<%= currentPage === 'signup' ? 'bg-red-600 font-medium' : 'hover:bg-red-400' %> py-2 px-4 rounded-lg transition duration-300 border border-white"
+            class="<%= currentPage === 'signup' ? 'bg-red-600 font-medium' : 'hover:bg-red-400' %> py-2 px-4 rounded-lg transition duration-300 border-3 border-white"
           >
             SignUp
           </a>
@@ -165,7 +165,7 @@
           <form action="/logout" method="POST">
             <button
               type="submit"
-              class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 border border-white flex items-center"
+              class="hover:bg-red-400 py-2 px-4 rounded-lg transition duration-300 border-3 border-white flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

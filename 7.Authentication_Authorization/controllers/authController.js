@@ -141,6 +141,7 @@ const postSignup = [
     if (!errors.isEmpty()) {
       return res.status(400).render("auth/signup", {
         pageTitle: "Sign Up",
+        currentPage: 'signup',
         isLoggedIn: false,
         errors: errors.array().map((error) => error.msg),
         oldInput: {
@@ -172,6 +173,7 @@ const postSignup = [
       .catch((err) => {
         return res.status(400).render("auth/signup", {
           pageTitle: "Sign Up",
+          currentPage: 'signup',
           isLoggedIn: false,
           errors: [err.msg],
           oldInput: { firstName, lastName, email, password, userType },
