@@ -4,11 +4,10 @@ const path = require("path");
 // external module
 const express = require("express");
 const { default: mongoose } = require("mongoose");
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-
+const session = require('express-session'); // top of MongoDBStore 
+const MongoDBStore = require('connect-mongodb-session')(session); // below of session
+const multer = require('multer');
 const DB_PATH = "mongodb://localhost:27017/airbnb";
-
 
 // local module
 const storeRouter = require("./routes/storeRouter");
@@ -28,11 +27,44 @@ app.set("views", "views");
 const store = new MongoDBStore({
   uri: DB_PATH,
   collection: 'sessions'
-})
+});
 
-// Granting access to public folder
-app.use(express.static(path.join(rootDir, "src")));
-app.use(express.urlencoded()); // parsing body
+const randomString = (length) => {
+  const characters = 'abcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  }, 
+  filename: (req, file, cb) => {
+    cb(null, randomString(10) + '-' + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+
+const multerOptions = {
+  storage, fileFilter
+};
+
+app.use(express.urlencoded({ extended: true })); // parsing body
+app.use(multer(multerOptions).single('photo'));
+app.use(express.static(path.join(rootDir, "src"))); // Granting access to public folder
+app.use("/uploads", express.static(path.join(rootDir, 'uploads')));
+app.use("/host/uploads", express.static(path.join(rootDir, 'uploads')));
+
 
 app.use(session({
   secret: "Airbnb",
@@ -44,9 +76,6 @@ app.use(session({
 
 // middleware that checks whether a cookie indicates the user is logged in or not
 app.use((req, res, next) => {
-  // console.log('Cookie check middleware', req.get('Cookie'));
-  // req.isLoggedIn = req.get('Cookie') ? req.get('Cookie').split('=')[1] === 'true' : false;
-
   req.isLoggedIn = req.session.isLoggedIn;
   next();
 });

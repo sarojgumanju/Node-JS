@@ -29,8 +29,17 @@ const getHostHomes = (req, res, next) => {
 
 // ----------------------------- post Add Home -----------------------------
 const postAddHome = (req, res, next) => {
-  const { houseName, price, location, rating, photo, description } = req.body;
- console.log(req.body);
+  const { houseName, price, location, rating, description } = req.body;
+ // console.log(req.body);
+  // console.log(req.file);
+
+ if (!req.file) {
+    return res.status(422).send("No image provided");
+  }
+
+ const photo = req.file.path;
+ console.log("This is the path of Photo: ", photo);
+
   const home = new Home({
     houseName,
     price,
@@ -73,24 +82,39 @@ const getEditHome = (req, res, next) => {
 
 // ---------------------------- post Edit Home -----------------------------
 const postEditHome = (req, res, next) => {
-  const { id, houseName, price, location, rating, photo, description } =
+  const { id, houseName, price, location, rating, description } =
     req.body;
-  Home.findById(id).then((home) => {
-    home.houseName = houseName;
-    home.price = price;
-    home.location = location;
-    home.rating = rating;
-    home.photo = photo;
-    home.description = description;
-    home.save().then((result) => {
-      console.log("Home updated ", result);
-    }).catch(err => {
-      console.log("Error while updating ", err);
+    
+  Home.findById(id)
+    .then((home) => {
+      home.houseName = houseName;
+      home.price = price;
+      home.location = location;
+      home.rating = rating;
+      home.description = description;
+
+      if (req.file) {
+        // fs.unlink(home.photo, (err) => {
+        //   if (err) {
+        //     console.log("Error while deleting file ", err);
+        //   }
+        // });
+        home.photo = req.file.path;
+      }
+
+      home
+        .save()
+        .then((result) => {
+          console.log("Home updated ", result);
+        })
+        .catch((err) => {
+          console.log("Error while updating ", err);
+        });
+      res.redirect("/host/host-home-list");
     })
-    res.redirect("/host/host-home-list");
-  }).catch(err => {
-    console.log("Error while finding home ", err);
-  });
+    .catch((err) => {
+      console.log("Error while finding home ", err);
+    });
 };
   
 
