@@ -64,7 +64,7 @@ app.use(multer(multerOptions).single('photo'));
 app.use(express.static(path.join(rootDir, "src"))); // Granting access to public folder
 app.use("/uploads", express.static(path.join(rootDir, 'uploads')));
 app.use("/host/uploads", express.static(path.join(rootDir, 'uploads')));
-
+app.use("/homes/uploads", express.static(path.join(rootDir, 'uploads')));
 
 app.use(session({
   secret: "Airbnb",
